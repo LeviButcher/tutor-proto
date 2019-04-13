@@ -19,22 +19,22 @@ namespace TutorPrototype.EF
 
         public DbSet<SignIn> SignIns { get; set; }
 
-        public DbSet<Semester> Semesters{ get; set; }
+        public DbSet<Semester> Semesters { get; set; }
 
-        public DbSet<SignInCourses> SignInCourses{ get; set; }
+        public DbSet<SignInCourses> SignInCourses { get; set; }
 
-        public DbSet<SignInReason> SignInReasons{ get; set; }
+        public DbSet<SignInReason> SignInReasons { get; set; }
 
         public DbSet<Department> Departments { get; set; }
 
-        
+
 
         public TPContext()
         {
 
         }
 
-      
+
         public TPContext(DbContextOptions options) : base(options)
         {
             try
@@ -47,13 +47,20 @@ namespace TutorPrototype.EF
             }
         }
 
-       
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(connection, options => options.EnableRetryOnFailure());
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<SignInCourses>().HasKey(key => new { key.SignInID, key.CourseID});
+
+            builder.Entity<SignInReason>().HasKey(key => new { key.SignInID, key.ReasonID});
         }
     }
 }
