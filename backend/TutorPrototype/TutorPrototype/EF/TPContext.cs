@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using TutorPrototype.Models;
 
 namespace TutorPrototype.EF
@@ -26,8 +27,6 @@ namespace TutorPrototype.EF
         public DbSet<SignInReason> SignInReasons { get; set; }
 
         public DbSet<Department> Departments { get; set; }
-
-
 
         public TPContext()
         {
@@ -62,5 +61,7 @@ namespace TutorPrototype.EF
 
             builder.Entity<SignInReason>().HasKey(key => new { key.SignInID, key.ReasonID});
         }
+
+        
     }
 }

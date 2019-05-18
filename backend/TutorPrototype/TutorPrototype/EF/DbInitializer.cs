@@ -48,8 +48,8 @@ namespace TutorPrototype.EF
             string signInReasons = File.ReadAllText(@"..\..\SampleData\dbo.SignInReasons.data.sql");
             string signInCourses = File.ReadAllText(@"..\..\SampleData\dbo.SignInCourses.data.sql");
 
-            context.Database.ExecuteSqlCommand(courses);
             context.Database.ExecuteSqlCommand(departments);
+            context.Database.ExecuteSqlCommand(courses);
             context.Database.ExecuteSqlCommand(people);
             context.Database.ExecuteSqlCommand(reasons);
             context.Database.ExecuteSqlCommand(semesters);
@@ -57,6 +57,5 @@ namespace TutorPrototype.EF
             context.Database.ExecuteSqlCommand(signInReasons);
             context.Database.ExecuteSqlCommand(signInCourses);
         }
-
     }
 }

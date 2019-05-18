@@ -9,11 +9,16 @@ namespace TutorPrototype.Models
 {
     public class SignInCourses
     {
-        [Key, Column(Order = 0)]
-        [ForeignKey(nameof(CourseID))]
+        [Required]
         public int CourseID { get; set; }
-        [Key, Column(Order = 1)]
-        [ForeignKey(nameof(SignInID))]
+
+        [ForeignKey(nameof(CourseID))]
+        public Course Course { get; set; }
+
+        [Required]
         public int SignInID { get; set; }
+
+        [ForeignKey(nameof(SignInID))]
+        public SignIn SignIn { get; set; }
     }
 }
