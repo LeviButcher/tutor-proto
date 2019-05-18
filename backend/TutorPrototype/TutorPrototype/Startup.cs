@@ -15,6 +15,7 @@ using TutorPrototype.EF;
 using TutorPrototype.Repos;
 using TutorPrototype.Repos.Interfaces;
 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "web.config", Watch = true)]
 namespace TutorPrototype
 {
     public class Startup
@@ -32,7 +33,7 @@ namespace TutorPrototype
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
+
             services.AddDbContext<TPContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("TutorProto")));
 

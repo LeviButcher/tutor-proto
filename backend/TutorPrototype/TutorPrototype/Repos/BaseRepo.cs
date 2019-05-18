@@ -8,10 +8,12 @@ using TutorPrototype.EF;
 
 namespace TutorPrototype.Repos
 {
-    public class BaseRepo
+    public class BaseRepo : IDisposable
     {
         protected readonly TPContext _db;
         private bool _disposed = false;
+
+        readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public BaseRepo()
         {
@@ -28,6 +30,7 @@ namespace TutorPrototype.Repos
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed) return;
@@ -48,18 +51,18 @@ namespace TutorPrototype.Repos
             catch (DbUpdateConcurrencyException ex)
             {
                 //A concurrency error occurred
-                Console.WriteLine(ex);
+                logger.Error("Database cannot be updated.", ex);
                 throw;
             }
             catch (RetryLimitExceededException ex)
             {
                 //_dbResiliency retry limit exceeded
-                Console.WriteLine(ex);
+                logger.Error("Maximum retry limit reached.", ex);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                logger.Error("Error occurred.", ex);
                 throw;
             }
         }

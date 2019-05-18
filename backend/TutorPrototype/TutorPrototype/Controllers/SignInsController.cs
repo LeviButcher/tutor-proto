@@ -40,12 +40,27 @@ namespace TutorPrototype.Controllers
         //   return result;
         //}
 
-        // GET: api/SignIns/Get/5
+        // GET: api/SignIns/Get/5        
+        /// <summary>
+        /// Gets the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             //TODO: Check if SignIn Exists first
-            return Ok(await _iRepo.GetSignIn(id));
+
+            SignInViewModel model = await _iRepo.GetSignIn(id);
+
+            if (model != null)
+            {
+                return Ok(model);
+            }
+            else
+            {
+                return BadRequest(); 
+            }
         }
 
         // PUT: api/SignIns/UpdateSignIn/5
