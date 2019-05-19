@@ -8,15 +8,9 @@ import {
   FormControlLabel,
   Radio
 } from "@material-ui/core";
-import styled from "styled-components";
-import { Form } from "../../ui/index.js";
+import { Form, Section } from "../../ui/index.js";
 import { useUserInfo, useReasons } from "../../hooks";
 import validateEmail from "../../utils/validateEmail";
-
-const CenterContent = styled.div`
-  width: 800px;
-  margin: auto;
-`;
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -34,7 +28,7 @@ const SignIn = () => {
   }
 
   return (
-    <CenterContent>
+    <Section>
       <Form>
         <header>
           <Typography variant="h3" align="center" gutterBottom>
@@ -92,7 +86,7 @@ const SignIn = () => {
           )}
         </div>
       </Form>
-    </CenterContent>
+    </Section>
   );
 };
 

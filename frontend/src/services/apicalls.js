@@ -29,4 +29,12 @@ function getReasons() {
   });
 }
 
-export { getStudentInfo, getReasons };
+function getIsSignedIn(email) {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      return res(email === "lbutche3@wvup.edu");
+    }, 1000);
+  });
+}
+
+export { getStudentInfo, getReasons, getIsSignedIn };

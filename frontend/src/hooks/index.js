@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { getReasons, getStudentInfo } from "../services/apicalls";
+import {
+  getReasons,
+  getStudentInfo,
+  getIsSignedIn
+} from "../services/apicalls";
 
 function useUserInfo(email) {
   const [user, setUser] = useState();
@@ -28,4 +32,17 @@ function useReasons() {
   return [reasons];
 }
 
-export { useUserInfo, useReasons };
+function useIsSignedIn(email) {
+  const [isSignedIn, setIsSignedIn] = useState();
+  useEffect(
+    () => {
+      getIsSignedIn(email).then(signedIn => {
+        setIsSignedIn(signedIn);
+      });
+    },
+    [email]
+  );
+  return [isSignedIn];
+}
+
+export { useUserInfo, useReasons, useIsSignedIn };

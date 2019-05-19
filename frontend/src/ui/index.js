@@ -1,3 +1,4 @@
 import Form from "./Form";
+import Section from "./Section";
 
-export { Form };
+export { Form, Section };
