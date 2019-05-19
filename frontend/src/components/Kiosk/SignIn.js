@@ -11,6 +11,7 @@ import {
 import styled from "styled-components";
 import { Form } from "../../ui/index.js";
 import { useUserInfo, useReasons } from "../../hooks";
+import validateEmail from "../../utils/validateEmail";
 
 const CenterContent = styled.div`
   width: 800px;
@@ -24,8 +25,12 @@ const SignIn = () => {
 
   function checkEmail(email) {
     // this should contain what makes sure email is valid, then setEmail in state
-    setEmail(email);
-    console.log(email);
+    if (validateEmail(email)) {
+      setEmail(email);
+      console.log(email);
+    } else {
+      console.log("Invalid email");
+    }
   }
 
   return (
@@ -41,6 +46,7 @@ const SignIn = () => {
             name="email"
             label="Email"
             fullWidth
+            disabled={user !== undefined}
             helperText="Please type in a valid wvup email"
             margin="normal"
             onChange={e => checkEmail(e.target.value)}

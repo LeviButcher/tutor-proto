@@ -1,4 +1,4 @@
-const Reasons = [{ name: "Computer Use", id: 1 }, { name: "Tutoring", id: 2 }];
+const Reasons = [{ name: "Tutoring", id: 2 }, { name: "Computer Use", id: 1 }];
 const Courses = [
   { courseName: "CS121", CRN: "13224" },
   { courseName: "CS420", CRN: "34561" },
