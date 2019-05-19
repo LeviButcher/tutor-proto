@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
   return (
     <KioskLayout>
       <AppBar position="static">
-        <Typography variant="h2" align="center" gutterButtom={true}>
+        <Typography variant="h2" align="center" gutterBottom>
           Welcome to the tutoring center
         </Typography>
       </AppBar>
