@@ -4,6 +4,7 @@ import KioskLayout from "./components/Kiosk/KioskLayout";
 import KioskHome from "./components/Kiosk/KioskHome";
 import SignIn from "./components/Kiosk/SignIn";
 import SignOut from "./components/Kiosk/SignOut";
+import DashboardLayout from "./components/Dashboard/DashboardLayout";
 
 function App() {
   return (
@@ -14,25 +15,16 @@ function App() {
           <SignIn path="/signin" />
           <SignOut path="/signout" />
         </KioskLayout>
-        <AdminLayout path="/admin">
-          <Admin path="/" />
-          <Welcome path="/welcome" />
-        </AdminLayout>
+        <DashboardLayout path="/dashboard">
+          <Intro path="/" />
+        </DashboardLayout>
       </Router>
     </div>
   );
 }
 
-function Welcome() {
+function Intro() {
   return <h1>Hello world</h1>;
-}
-
-function Admin() {
-  return <h1>secret admin</h1>;
-}
-
-function AdminLayout({ children }) {
-  return <div>{children}</div>;
 }
 
 export default App;
