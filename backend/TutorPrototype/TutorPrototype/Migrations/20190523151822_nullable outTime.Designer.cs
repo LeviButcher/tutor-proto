@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TutorPrototype.EF;
 
 namespace TutorPrototype.Migrations
 {
     [DbContext(typeof(TPContext))]
-    partial class TPContextModelSnapshot : ModelSnapshot
+    [Migration("20190523151822_nullable outTime")]
+    partial class nullableoutTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

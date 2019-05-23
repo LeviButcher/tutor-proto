@@ -66,7 +66,7 @@ namespace TutorPrototype.Repos
                 SemesterId = signIn.SemesterId,
                 SemesterName = signIn.Semester.Name,
                 InTime = signIn.InTime,
-                OutTime = signIn.OutTime,
+                OutTime = (DateTime) signIn.OutTime,
                 Tutoring = signIn.Tutoring,
                 Courses = signIn.Courses.Select(x => x.Course).ToList(),
                 Reasons = signIn.Reasons.Select(x => x.Reason).ToList()     

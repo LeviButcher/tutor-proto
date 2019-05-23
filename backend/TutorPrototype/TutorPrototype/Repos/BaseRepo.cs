@@ -10,7 +10,7 @@ namespace TutorPrototype.Repos
 {
     public class BaseRepo
     {
-        protected readonly TPContext _db;
+        protected TPContext _db;
         private bool _disposed = false;
 
         public BaseRepo()
