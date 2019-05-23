@@ -2,6 +2,7 @@ import React from "react";
 import { Drawer, Typography } from "@material-ui/core";
 import { Link } from "@reach/router";
 import styled from "styled-components";
+import PermissionCheck from "../PermissionCheck";
 
 const sideDrawerWidth = "240px";
 
@@ -50,13 +51,15 @@ const Layout = ({ children }) => {
           <Link to="#">Weekly Visits</Link>
         </StyledNavigationGroup>
         <StyledNavigationGroup heading="Reports">
-          <Link to="#">Weekly Visits</Link>
+          <Link to="/dashboard/weekly-visists">Weekly Visits</Link>
           <Link to="#">Success Report</Link>
         </StyledNavigationGroup>
-        <StyledNavigationGroup heading="Admin">
-          <Link to="#">Users</Link>
-          <Link to="#">Reasons</Link>
-        </StyledNavigationGroup>
+        <PermissionCheck userRole="Admin" showError={false}>
+          <StyledNavigationGroup heading="Admin">
+            <Link to="#">Users</Link>
+            <Link to="#">Reasons</Link>
+          </StyledNavigationGroup>
+        </PermissionCheck>
       </SideDrawer>
       <main>{children}</main>
     </DashboardLayout>

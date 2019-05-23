@@ -5,6 +5,8 @@ import KioskHome from "./components/Kiosk/KioskHome";
 import SignIn from "./components/Kiosk/SignIn";
 import SignOut from "./components/Kiosk/SignOut";
 import DashboardLayout from "./components/Dashboard/DashboardLayout";
+import PermissionCheck from "./components/PermissionCheck";
+import WeeklyVisits from "./components/Dashboard/WeeklyVisits";
 
 function App() {
   return (
@@ -17,6 +19,10 @@ function App() {
         </KioskLayout>
         <DashboardLayout path="/dashboard">
           <Intro path="/" />
+          <WeeklyVisits path="/weekly-visists" />
+          <PermissionCheck path="/admin" userRole="admin">
+            <Intro path="/" />
+          </PermissionCheck>
         </DashboardLayout>
       </Router>
     </div>
