@@ -27,16 +27,9 @@ namespace TutorPrototype.Controllers
 
         // GET: api/SignIns/5
         [HttpGet("{id}")]
-        [Route("{id:int}/")]
         public async Task<ActionResult<SignInViewModel>> Get([FromRoute] int id)
         {
-            var signIn = await _iRepo.GetSignIn(id);
-
-            if(signIn == null)
-            {
-                return NotFound();
-            }
-            return signIn;
+            return Ok(await _iRepo.GetSignIn(id));
         }
 
          // POST: api/SignIns/
@@ -46,15 +39,14 @@ namespace TutorPrototype.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }      
+            }
 
             return Ok(_iRepo.CreateSignIn(signIn));
 
         }
 
         // PUT: api/SignIns/5
-        [HttpPut("{id}")]
-        [Route("{id:int}/")]
+        [HttpPut("/signIns/{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] SignIn signIn)
         {
             if (!ModelState.IsValid)
@@ -88,38 +80,17 @@ namespace TutorPrototype.Controllers
             signIn.OutTime = DateTime.Now;
 
             return Ok(_iRepo.UpdateSignIn(signIn));
-
-            //_context.Entry(signIn).State = EntityState.Modified;
-
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!SignInExists(id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-
-            return NoContent();
         }
-        //TODO:   Make certain these work independently
-
-        // GET: api/SignIns/5/student
-        [HttpGet("{studentID}/student")]
+        
+        // GET: api/SignIns/1/id
+        [HttpGet("{studentID}/id")]
         public StudentInfoViewModel GetStudentInfoWithID([FromRoute] int studentID)
         {
             return _iRepo.GetStudentInfoWithID(studentID);
         }
 
-        // GET: api/SignIns/student@wvup.edu/student
-        [HttpGet("{studentEmail}/student")]
+        // GET: api/SignIns/student@wvup.edu/email
+        [HttpGet("{studentEmail}/email")]
         public StudentInfoViewModel GetStudentInfoWithEmail([FromRoute] string studentEmail)
         {
             return _iRepo.GetStudentInfoWithEmail(studentEmail);
