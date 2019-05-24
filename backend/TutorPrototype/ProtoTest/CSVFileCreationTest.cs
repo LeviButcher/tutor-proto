@@ -20,7 +20,7 @@ namespace ProtoTest
             CSVFileUtil.CreateCSVFile("test", sampleData);
 
             Assert.True(File.Exists
-                (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+                (Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 "CSV", "test.csv")));
         }
 
@@ -43,7 +43,7 @@ namespace ProtoTest
         public void CanDecodeArray()
         {
 
-            string proper = "Jack,Jane,Jill,Ally";
+            const string proper = "Jack,Jane,Jill,Ally";
 
             byte[] bytes = Encoding.ASCII.GetBytes(proper);
 
