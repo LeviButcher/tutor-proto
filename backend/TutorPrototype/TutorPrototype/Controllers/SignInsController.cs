@@ -12,7 +12,7 @@ using TutorPrototype.Repos.Interfaces;
 
 namespace TutorPrototype.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class SignInsController : ControllerBase
     {
@@ -47,7 +47,7 @@ namespace TutorPrototype.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        public async Task<ActionResult<SignInViewModel>> Get([FromRoute] int id)
         {
             //TODO: Check if SignIn Exists first
 
@@ -63,9 +63,22 @@ namespace TutorPrototype.Controllers
             }
         }
 
-        // PUT: api/SignIns/UpdateSignIn/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSignIn([FromRoute] int id, [FromBody] SignIn signIn)
+         // POST: api/SignIns/
+        [HttpPost]
+        public IActionResult Create([FromBody] SignIn signIn)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(_iRepo.CreateSignIn(signIn));
+
+        }
+
+        // PUT: api/SignIns/5
+        [HttpPut("/signIns/{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] SignIn signIn)
         {
             if (!ModelState.IsValid)
             {
@@ -77,30 +90,13 @@ namespace TutorPrototype.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(signIn).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SignInExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(_iRepo.UpdateSignIn(signIn));
         }
 
-        // PUT: api/SignIns/SignOut/5
+        //PUT: api/SignIns/5/SignOut
         [HttpPut("{id}")]
-        public async Task<IActionResult> SignOut([FromRoute] int id, [FromBody] SignIn signIn)
+        [Route("{id:int}/SignOut")]
+        public IActionResult SignOut([FromRoute] int id, [FromBody] SignIn signIn)
         {
             if (!ModelState.IsValid)
             {
@@ -112,43 +108,20 @@ namespace TutorPrototype.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(signIn).State = EntityState.Modified;
+            signIn.OutTime = DateTime.Now;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SignInExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(_iRepo.UpdateSignIn(signIn));
         }
-
-        // GET: api/SignIns/SignInExists/5
-        [HttpGet("{id}")]
-        private bool SignInExists([FromRoute] int id)
-        {
-            return _iRepo.SignInExists(id);
-        }
-
-        // GET: api/SignIns/GetStudentInfoWithID/5
-        [HttpGet("{studentID}")]
+        
+        // GET: api/SignIns/1/id
+        [HttpGet("{studentID}/id")]
         public StudentInfoViewModel GetStudentInfoWithID([FromRoute] int studentID)
         {
             return _iRepo.GetStudentInfoWithID(studentID);
         }
 
-        // GET: api/SignIns/GetStudentInfoWithID/email
-        [HttpGet("{studentEmail}")]
+        // GET: api/SignIns/student@wvup.edu/email
+        [HttpGet("{studentEmail}/email")]
         public StudentInfoViewModel GetStudentInfoWithEmail([FromRoute] string studentEmail)
         {
             return _iRepo.GetStudentInfoWithEmail(studentEmail);

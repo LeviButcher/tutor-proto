@@ -14,30 +14,46 @@ namespace TutorPrototype.Repos
         
         public DbSet<Person> PersonTable;
         public DbSet<Course> CourseTable;
+        StudentInfoViewModel studentInfoViewModel = new StudentInfoViewModel();
 
         public override StudentInfoViewModel GetStudentInfoWithEmail(string studentEmail)
-        {
-            return GetStudentInfo();
+        {            
+            return GetStudentInfo(studentInfoViewModel, studentEmail, -1);           
         }
 
         public override StudentInfoViewModel GetStudentInfoWithID(int studentID)
         {
-            return GetStudentInfo();
+            return GetStudentInfo(studentInfoViewModel, " ", studentID);
         }
 
-        private StudentInfoViewModel GetStudentInfo()
+        private StudentInfoViewModel GetStudentInfo(StudentInfoViewModel student, String email, int id)
         {
             PersonTable = _db.Set<Person>();
-            CourseTable = _db.Set<Course>();
+            Person newStudent = null;
 
-            StudentInfoViewModel studentInfoViewModel = new StudentInfoViewModel();
+         
+            if(id == -1)
+            {
+                newStudent = PersonTable.Where(x => x.Email == email).First();
+            }
+            else
+            {
+                newStudent = PersonTable.Where(x => x.ID == id).First();
+            }
             
-            Person newStudent = PersonTable.Where(x => x.Email == "mtmqbude26@wvup.edu").First();
-            studentInfoViewModel.studentEmail = newStudent.Email;
-            studentInfoViewModel.firstName = newStudent.FirstName;
-            studentInfoViewModel.lastName = newStudent.LastName;
-            studentInfoViewModel.studentID = newStudent.ID;
-            studentInfoViewModel.semesterId = 201903;
+            student.studentEmail = newStudent.Email;
+            student.firstName = newStudent.FirstName;
+            student.lastName = newStudent.LastName;
+            student.studentID = newStudent.ID;
+            student.semesterId = 201903;
+
+            return GetCourseInfo(student);
+            
+        }
+
+        private StudentInfoViewModel GetCourseInfo(StudentInfoViewModel studentInfoViewModel)
+        {
+            CourseTable = _db.Set<Course>();
 
             List<Course> schedule = new List<Course>();
             Course first = CourseTable.Where(x => x.CRN == 1).First();

@@ -10,7 +10,7 @@ namespace TutorPrototype.Repos
 {
     public class BaseRepo : IDisposable
     {
-        protected readonly TPContext _db;
+        protected TPContext _db;
         private bool _disposed = false;
 
         readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

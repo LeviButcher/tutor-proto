@@ -25,9 +25,7 @@ namespace TutorPrototype.Models
         public Semester Semester { get; set; }
 
         public DateTime InTime { get; set; }
-
-        public DateTime OutTime { get; set; }
-
+        public DateTime? OutTime{ get; set; }
         public bool Tutoring { get; set; }
 
         [InverseProperty(nameof(SignInCourses.SignIn))]
