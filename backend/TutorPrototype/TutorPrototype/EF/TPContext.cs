@@ -10,6 +10,9 @@ namespace TutorPrototype.EF
 {
     public class TPContext : DbContext
     {
+        readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         protected string connection = @"Server=(localdb)\mssqllocaldb;Database=TutorProto;Trusted_connection=True;MultipleActiveResultSets=true;";
 
         public DbSet<Course> Courses { get; set; }
@@ -40,8 +43,9 @@ namespace TutorPrototype.EF
             {
                 Database.Migrate();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.Error("Exception running migrations. ", ex);
                 //Book says do something intelligent here
             }
         }
@@ -62,6 +66,6 @@ namespace TutorPrototype.EF
             builder.Entity<SignInReason>().HasKey(key => new { key.SignInID, key.ReasonID});
         }
 
-        
+
     }
 }

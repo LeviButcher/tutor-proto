@@ -13,11 +13,15 @@ namespace TutorPrototype.Models
         [Key]
         [InverseProperty(nameof(SignInCourses.Course))]
         public int CRN { get; set; }
+
         [Required]
         public int DepartmentID { get; set; }
+
         [ForeignKey(nameof(DepartmentID))]
         public Department Department { get; set; }
+
         public string CourseName { get; set; }
+
         public string ShortName { get; set; }
     }
 }
