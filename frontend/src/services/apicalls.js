@@ -10,6 +10,15 @@ const user = {
   courses: Courses
 };
 
+const WeeklyVisitsData = [
+  { week: 1, visits: 40 },
+  { week: 2, visits: 50 },
+  { week: 3, visits: 35 },
+  { week: 4, visits: 70 },
+  { week: 5, visits: 55 },
+  { week: 6, visits: 42 }
+];
+
 function getStudentInfo(email) {
   return new Promise((res, rej) => {
     setTimeout(() => {
@@ -37,4 +46,11 @@ function getIsSignedIn(email) {
   });
 }
 
-export { getStudentInfo, getReasons, getIsSignedIn };
+function getWeeklyVisitsData({ startDate, endDate }) {
+  console.log(startDate, endDate);
+  return new Promise((res, rej) => {
+    setTimeout(() => res(WeeklyVisitsData), 1000);
+  });
+}
+
+export { getStudentInfo, getReasons, getIsSignedIn, getWeeklyVisitsData };
