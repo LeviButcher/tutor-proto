@@ -9,7 +9,7 @@ namespace TutorPrototype.Repos.Interfaces
 {
     public interface ISignInRepo
     {
-        int CreateSignIn(SignIn signIn);
+        int CreateSignIn(SignIn signIn, List<Course> courses, List<Reason> reasons);
 
         int UpdateSignIn(SignIn signIn);
 

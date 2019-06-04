@@ -14,24 +14,104 @@ namespace TutorPrototype.Repos
     public abstract class SignInRepo : BaseRepo, ISignInRepo
     {
         public DbSet<SignIn> Table;
+        public DbSet<Course> CoursesTable;
+        public DbSet<Department> DepartmentsTable;
+        public DbSet<Reason> ReasonsTable;
+        public DbSet<Semester> SemestersTable;
+        public DbSet<SignInCourses> SignInCoursesTable;
+        public DbSet<SignInReason> SignInReasonsTable;
 
         public SignInRepo()
         {
             Table = _db.Set<SignIn>();
+            CoursesTable = _db.Set<Course>();
+            ReasonsTable = _db.Set<Reason>();
+            SemestersTable = _db.Set<Semester>();
+            DepartmentsTable = _db.Set<Department>();
+            SignInCoursesTable = _db.Set<SignInCourses>();
+            SignInReasonsTable = _db.Set<SignInReason>();
         }
 
-        public SignInRepo(DbContextOptions options)
+        public SignInRepo(DbContextOptions options) : base(options)
         {
             Table = _db.Set<SignIn>();
+            CoursesTable = _db.Set<Course>();
+            ReasonsTable = _db.Set<Reason>();
+            SemestersTable = _db.Set<Semester>();
+            DepartmentsTable = _db.Set<Department>();
+            SignInCoursesTable = _db.Set<SignInCourses>();
+            SignInReasonsTable = _db.Set<SignInReason>();
         }        
 
-        public int CreateSignIn(SignIn signIn)
+        public int CreateSignIn(SignIn signIn, List<Course> courses, List<Reason> reasons)
+        {
+            if(!SemesterExists(signIn.SemesterId))
+            {
+                AddSemester(signIn.SemesterId);
+            }
+            Table.Add(signIn);
+            
+            foreach(Course course in courses)
+            {
+                if(!CourseExists(course.CRN))
+                {
+                    CoursesTable.Add(course);  
+                }
+
+                SignInCoursesTable.Add(new SignInCourses
+                {
+                    SignInID = signIn.ID,
+                    CourseID = course.CRN
+                });
+            }
+
+            foreach(Reason reason in reasons)
+            {
+                if (!ReasonExists(reason.ID))
+                {
+                    ReasonsTable.Add(reason);
+                }
+
+                SignInReasonsTable.Add(new SignInReason
+                {
+                    SignInID = signIn.ID,
+                    ReasonID = reason.ID
+                });
+            }
+
+            return SaveChanges();
+        }
+
+        private void AddSemester(int id)
+        {
+            String name = "";
+            if(id % 100 == 01)
+            {
+                name = "Fall " + id / 100;
+            }
+            else if(id % 100 == 02)
+            {
+                name = "Spring " + id / 100;
+            }
+            else
+            {
+                name = "Summer " + id / 100;
+            }
+
+            
+            SemestersTable.Add(new Semester
+            {
+                ID = id,
+                Name = name 
+            });
+        }
+
+        public int CreateSignInCourses(SignIn signIn)
         {
             Table.Add(signIn);
 
             return SaveChanges();
         }
-            
         public int UpdateSignIn(SignIn signIn)
         {
             Table.Update(signIn);
@@ -75,6 +155,21 @@ namespace TutorPrototype.Repos
         public bool SignInExists(int id)
         {
             return Table.Any(e => e.ID == id);
+        }
+
+        public bool CourseExists(int crn)
+        {
+            return CoursesTable.Any(e => e.CRN == crn);
+        }
+
+        public bool ReasonExists(int id)
+        {
+            return ReasonsTable.Any(e => e.ID == id);
+        }
+
+        public bool SemesterExists(int id)
+        {
+            return SemestersTable.Any(e => e.ID == id);
         }
 
         public abstract StudentInfoViewModel GetStudentInfoWithEmail(string studentEmail);

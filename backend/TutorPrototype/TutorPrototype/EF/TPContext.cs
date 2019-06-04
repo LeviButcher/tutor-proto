@@ -60,6 +60,14 @@ namespace TutorPrototype.EF
             builder.Entity<SignInCourses>().HasKey(key => new { key.SignInID, key.CourseID});
 
             builder.Entity<SignInReason>().HasKey(key => new { key.SignInID, key.ReasonID});
+
+            builder.Entity<Course>()
+            .Property(p => p.CRN)
+            .ValueGeneratedNever();
+
+            builder.Entity<Semester>()
+            .Property(p => p.ID)
+            .ValueGeneratedNever();
         }
 
         

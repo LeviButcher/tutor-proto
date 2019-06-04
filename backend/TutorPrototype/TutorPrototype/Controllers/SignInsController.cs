@@ -34,15 +34,23 @@ namespace TutorPrototype.Controllers
 
          // POST: api/SignIns/
         [HttpPost]
-        public IActionResult Create([FromBody] SignIn signIn)
+        public IActionResult Create([FromBody] SignInViewModel signInViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return Ok(_iRepo.CreateSignIn(signIn));
+            SignIn signIn = new SignIn();
+            signIn.PersonId = signInViewModel.PersonId;
+            signIn.SemesterId = signInViewModel.SemesterId;
+            signIn.Tutoring = signInViewModel.Tutoring;
+            signIn.InTime = DateTime.Now;
 
+            List<Course> courses = signInViewModel.Courses;
+            List<Reason> reasons = signInViewModel.Reasons;
+            
+            return Ok(_iRepo.CreateSignIn(signIn, courses, reasons));         
         }
 
         // PUT: api/SignIns/5

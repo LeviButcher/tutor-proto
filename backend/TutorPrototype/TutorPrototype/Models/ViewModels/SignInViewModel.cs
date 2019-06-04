@@ -28,7 +28,7 @@ namespace TutorPrototype.Models.ViewModels
         public DateTime InTime { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime OutTime { get; set; }
+        public DateTime? OutTime { get; set; }
         
         public bool Tutoring { get; set; }
 

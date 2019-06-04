@@ -44,6 +44,8 @@ namespace TutorPrototype
             {
                 services.AddScoped<ISignInRepo, ProdSignInRepo>();
             }
+
+            services.AddScoped<IVisitsRepo, VisitsRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,8 +10,8 @@ using TutorPrototype.EF;
 namespace TutorPrototype.Migrations
 {
     [DbContext(typeof(TPContext))]
-    [Migration("20190413004635_init")]
-    partial class init
+    [Migration("20190528214337_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,9 +23,7 @@ namespace TutorPrototype.Migrations
 
             modelBuilder.Entity("TutorPrototype.Models.Course", b =>
                 {
-                    b.Property<int>("CRN")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("CRN");
 
                     b.Property<string>("CourseName");
 
@@ -34,6 +32,8 @@ namespace TutorPrototype.Migrations
                     b.Property<string>("ShortName");
 
                     b.HasKey("CRN");
+
+                    b.HasIndex("DepartmentID");
 
                     b.ToTable("Courses");
                 });
@@ -85,9 +85,7 @@ namespace TutorPrototype.Migrations
 
             modelBuilder.Entity("TutorPrototype.Models.Semester", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ID");
 
                     b.Property<string>("Name");
 
@@ -104,7 +102,7 @@ namespace TutorPrototype.Migrations
 
                     b.Property<DateTime>("InTime");
 
-                    b.Property<DateTime>("OutTime");
+                    b.Property<DateTime?>("OutTime");
 
                     b.Property<int>("PersonId");
 
@@ -113,6 +111,10 @@ namespace TutorPrototype.Migrations
                     b.Property<bool>("Tutoring");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("SemesterId");
 
                     b.ToTable("SignIns");
                 });
@@ -125,7 +127,7 @@ namespace TutorPrototype.Migrations
 
                     b.HasKey("SignInID", "CourseID");
 
-                    b.HasAlternateKey("CourseID", "SignInID");
+                    b.HasIndex("CourseID");
 
                     b.ToTable("SignInCourses");
                 });
@@ -138,9 +140,56 @@ namespace TutorPrototype.Migrations
 
                     b.HasKey("SignInID", "ReasonID");
 
-                    b.HasAlternateKey("ReasonID", "SignInID");
+                    b.HasIndex("ReasonID");
 
                     b.ToTable("SignInReasons");
+                });
+
+            modelBuilder.Entity("TutorPrototype.Models.Course", b =>
+                {
+                    b.HasOne("TutorPrototype.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TutorPrototype.Models.SignIn", b =>
+                {
+                    b.HasOne("TutorPrototype.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TutorPrototype.Models.Semester", "Semester")
+                        .WithMany()
+                        .HasForeignKey("SemesterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TutorPrototype.Models.SignInCourses", b =>
+                {
+                    b.HasOne("TutorPrototype.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TutorPrototype.Models.SignIn", "SignIn")
+                        .WithMany("Courses")
+                        .HasForeignKey("SignInID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TutorPrototype.Models.SignInReason", b =>
+                {
+                    b.HasOne("TutorPrototype.Models.Reason", "Reason")
+                        .WithMany()
+                        .HasForeignKey("ReasonID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TutorPrototype.Models.SignIn", "SignIn")
+                        .WithMany("Reasons")
+                        .HasForeignKey("SignInID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

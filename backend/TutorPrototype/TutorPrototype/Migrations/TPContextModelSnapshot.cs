@@ -21,9 +21,7 @@ namespace TutorPrototype.Migrations
 
             modelBuilder.Entity("TutorPrototype.Models.Course", b =>
                 {
-                    b.Property<int>("CRN")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("CRN");
 
                     b.Property<string>("CourseName");
 
@@ -85,9 +83,7 @@ namespace TutorPrototype.Migrations
 
             modelBuilder.Entity("TutorPrototype.Models.Semester", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ID");
 
                     b.Property<string>("Name");
 
