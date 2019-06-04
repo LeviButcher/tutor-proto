@@ -21,7 +21,7 @@ namespace TutorPrototype.Repos
         public DbSet<SignInCourses> SignInCoursesTable;
         public DbSet<SignInReason> SignInReasonsTable;
 
-        public SignInRepo()
+        protected SignInRepo()
         {
             Table = _db.Set<SignIn>();
             CoursesTable = _db.Set<Course>();
@@ -32,7 +32,8 @@ namespace TutorPrototype.Repos
             SignInReasonsTable = _db.Set<SignInReason>();
         }
 
-        public SignInRepo(DbContextOptions options) : base(options)
+
+        protected SignInRepo(DbContextOptions options) : base(options)
         {
             Table = _db.Set<SignIn>();
             CoursesTable = _db.Set<Course>();
@@ -42,6 +43,7 @@ namespace TutorPrototype.Repos
             SignInCoursesTable = _db.Set<SignInCourses>();
             SignInReasonsTable = _db.Set<SignInReason>();
         }        
+
 
         public int CreateSignIn(SignIn signIn, List<Course> courses, List<Reason> reasons)
         {
@@ -82,6 +84,7 @@ namespace TutorPrototype.Repos
             return SaveChanges();
         }
 
+
         private void AddSemester(int id)
         {
             String name = "";
@@ -112,6 +115,7 @@ namespace TutorPrototype.Repos
 
             return SaveChanges();
         }
+
         public int UpdateSignIn(SignIn signIn)
         {
             Table.Update(signIn);
@@ -130,7 +134,7 @@ namespace TutorPrototype.Repos
                             .ThenInclude(x => x.Course).ThenInclude(x=>x.Department)
                             .Include(x=> x.Reasons).ThenInclude(x => x.Reason)
                             .Where(x => x.ID == id).Select(item => GetRecord(item)).FirstAsync();
-                
+
             return signIn;
         }
 
@@ -149,7 +153,7 @@ namespace TutorPrototype.Repos
                 OutTime = (DateTime) signIn.OutTime,
                 Tutoring = signIn.Tutoring,
                 Courses = signIn.Courses.Select(x => x.Course).ToList(),
-                Reasons = signIn.Reasons.Select(x => x.Reason).ToList()     
+                Reasons = signIn.Reasons.Select(x => x.Reason).ToList()
             };
 
         public bool SignInExists(int id)
@@ -176,6 +180,6 @@ namespace TutorPrototype.Repos
 
         public abstract StudentInfoViewModel GetStudentInfoWithID(int studentID);
 
-       
+
     }
 }

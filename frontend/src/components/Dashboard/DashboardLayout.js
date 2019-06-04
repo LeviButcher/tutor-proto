@@ -48,7 +48,7 @@ const Layout = ({ children }) => {
         <br />
         <StyledNavigationGroup heading="Visits">
           <Link to="#">Sign Ins</Link>
-          <Link to="#">Weekly Visits</Link>
+          <Link to="#">Class Tours</Link>
         </StyledNavigationGroup>
         <StyledNavigationGroup heading="Reports">
           <Link to="/dashboard/weekly-visists">Weekly Visits</Link>

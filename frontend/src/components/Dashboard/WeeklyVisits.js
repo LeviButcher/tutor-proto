@@ -1,35 +1,138 @@
-import React from "react";
+import React, { useState } from "react";
 import Chart from "react-apexcharts";
+import { getWeeklyVisitsData } from "../../services/apicalls";
+import { Section, Form } from "../../ui";
+import {
+  TextField,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow
+} from "@material-ui/core";
+import { useChartOptions, useApiCall } from "../../hooks";
 
 const chartOptions = {
   options: {
     chart: {
-      id: "basic-bar"
-    },
-    xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+      id: "weekly-visits-line"
     }
-  },
-  series: [
-    {
-      name: "series-1",
-      data: [30, 40, 45, 50, 49, 60, 70, 91]
-    }
-  ]
+  }
 };
 
 const WeeklyVisists = () => {
+  const [formData, setFormData] = useState({ startDate: "", endDate: "" });
+  const [submitted, setSubmitted] = useState(false);
+
+  function handleChange(target) {
+    setFormData({
+      ...formData,
+      [target.name]: target.value
+    });
+  }
+
+  function handleSubmit(e) {
+    console.log(e);
+    e.preventDefault();
+    setSubmitted(true);
+  }
+
   return (
     <div>
       <div className="mixed-charts">
-        <Chart
-          options={chartOptions.options}
-          series={chartOptions.series}
-          type="line"
-        />
+        <Form color="#fff" onSubmit={handleSubmit}>
+          <Section alignItems="Center" justifyContent="space-between">
+            <TextField
+              label="Start Date"
+              value={formData.startDate}
+              name="startDate"
+              onChange={e => handleChange(e.target)}
+              disabled={submitted}
+              type="date"
+              InputLabelProps={{
+                shrink: true
+              }}
+            />
+            <TextField
+              label="End Date"
+              value={formData.endDate}
+              name="endDate"
+              onChange={e => handleChange(e.target)}
+              disabled={submitted}
+              type="date"
+              InputLabelProps={{
+                shrink: true
+              }}
+            />
+            <Button
+              color="primary"
+              variant="outlined"
+              type="submit"
+              disabled={submitted}
+            >
+              Query Data
+            </Button>
+          </Section>
+        </Form>
+        {submitted && (
+          <WeeklyVisistsReport
+            startDate={formData.startDate}
+            endDate={formData.endDate}
+          />
+        )}
       </div>
     </div>
   );
+};
+
+const WeeklyVisistsReport = ({ startDate, endDate }) => {
+  const [loading, data, errors] = useApiCall(getWeeklyVisitsData, {
+    startDate,
+    endDate
+  });
+  return (
+    <Section alignItems="center" justifyContent="space-between">
+      {errors && <div>{errors}</div>}
+      {!loading && data && (
+        <>
+          <WeeklyVisistsTable data={data} />
+          <WeeklyVisistsChart data={data} />
+        </>
+      )}
+    </Section>
+  );
+};
+
+const WeeklyVisistsTable = ({ data }) => {
+  return (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Week</TableCell>
+          <TableCell>Visits</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {data.map(datum => (
+          <TableRow key={datum.week}>
+            <TableCell>{datum.week}</TableCell>
+            <TableCell>{datum.visits}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
+
+const WeeklyVisistsChart = ({ startDate, endDate, data }) => {
+  const [options, series] = useChartOptions(
+    chartOptions,
+    "week",
+    "visits",
+    data
+  );
+  return <Chart width="600px" options={options} series={series} type="line" />;
 };
 
 export default WeeklyVisists;

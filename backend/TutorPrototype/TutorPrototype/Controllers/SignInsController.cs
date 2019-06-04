@@ -25,11 +25,42 @@ namespace TutorPrototype.Controllers
             _iRepo = iRepo;
         }
 
-        // GET: api/SignIns/5
+        //// GET: api/SignIns/Get/0/10
+        //[HttpGet]
+        //public IEnumerable<SignIn> Get([FromQuery] int skip = 0, [FromQuery] int take = 10)
+        //{
+        //   return Ok(_iRepo.GetAll(skip, take));
+        //   return  _context.SignIns.AsEnumerable();
+        //}
+
+        //[HttpGet("{userId}")]
+        //public IActionResult Followers(string userId, [FromQuery] int skip = 0, [FromQuery] int take = 10)
+        //{
+        //   var result = Ok(_iRepo.GetFollowers(userId, skip, take));
+        //   return result;
+        //}
+
+        // GET: api/SignIns/Get/5        
+        /// <summary>
+        /// Gets the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<SignInViewModel>> Get([FromRoute] int id)
         {
-            return Ok(await _iRepo.GetSignIn(id));
+            //TODO: Check if SignIn Exists first
+
+            SignInViewModel model = await _iRepo.GetSignIn(id);
+
+            if (model != null)
+            {
+                return Ok(model);
+            }
+            else
+            {
+                return BadRequest(); 
+            }
         }
 
          // POST: api/SignIns/
